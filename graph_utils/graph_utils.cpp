@@ -89,6 +89,9 @@ int main()
 	graph_data.add_topo_edge(tf_topo_8.BranchID, tf_topo_9.BranchID, edge);
 	std::string file_name = "test.dot";
 	graph_data.print_topo_node_info();
+	TF_TOPO_VERTEX_DES_QUEUE topo_vertex_queue;
+	std::queue<std::string> branch_ids;
+	graph_data.breadth_first(tf_topo_4.BranchID, &branch_ids);
 	graph_data.write_file(file_name);
     return 0;
 }

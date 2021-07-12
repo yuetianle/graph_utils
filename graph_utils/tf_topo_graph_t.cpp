@@ -93,3 +93,69 @@ void tf_topo_graph_t::breadth_first(const std::string& branch_id, TF_TOPO_VERTEX
 		boost::breadth_first_search(_topo_graph, find_item->second, boost::visitor(topo_bfs_visitor));
 	}
 }
+
+void tf_topo_graph_t::breadth_first(const std::string& branch_id, std::queue<std::string> *branch_id_queue)
+{
+	if (branch_id.empty() || !branch_id_queue)
+	{
+		return;
+	}
+	auto find_item = _vertex_map.find(branch_id);
+
+	TF_TOPO_VERTEX_DES_QUEUE topo_vertex_queue;
+	tf_topo_bfs_visitor_t topo_bfs_visitor(topo_vertex_queue);
+	if (find_item != _vertex_map.end())
+	{
+		boost::breadth_first_search(_topo_graph, find_item->second, boost::visitor(topo_bfs_visitor));
+	}
+	while (!topo_vertex_queue.empty())
+	{
+		TF_TOPO_VERTEX_T data = _topo_graph[topo_vertex_queue.front()];
+		branch_id_queue->push(data.BranchID);
+		printf("branch_id:%s name:%s\r\n --->", data.BranchID.c_str(), data.BranchName.c_str());
+		topo_vertex_queue.pop();
+	}
+
+}
+
+void tf_topo_graph_t::dfs_first(const std::string& branch_id, TF_TOPO_VERTEX_DES_QUEUE *topo_vertex_queue)
+{
+	if (branch_id.empty() || !topo_vertex_queue)
+	{
+		return;
+	}
+	auto find_item = _vertex_map.find(branch_id);
+
+	tf_topo_dfs_visitor_t topo_dfs_visitor(*topo_vertex_queue);
+	if (find_item != _vertex_map.end())
+	{
+		//boost::depth_first_search(_topo_graph, find_item->second, boost::visitor(topo_dfs_visitor));
+	}
+
+}
+
+void tf_topo_graph_t::dfs_first(const std::string& branch_id, std::queue<std::string> *branch_id_queue)
+{
+	if (branch_id.empty() || !branch_id_queue)
+	{
+		return;
+	}
+	auto find_item = _vertex_map.find(branch_id);
+
+	TF_TOPO_VERTEX_DES_QUEUE topo_vertex_queue;
+	tf_topo_dfs_visitor_t topo_dfs_visitor(topo_vertex_queue);
+	if (find_item != _vertex_map.end())
+	{
+		std::vector<boost::default_color_type> color_map(boost::num_vertices(_topo_graph));
+		//boost::make_iterator_property_map(std::begin(color_map), boost::get(boost::vertex_name_t, _topo_graph), color_map[0]);
+		//boost::depth_first_search(_topo_graph, boost::visitor(topo_dfs_visitor), color_map, find_item->second);
+		//boost::depth_first_search(_topo_graph, find_item->second, boost::visitor(topo_dfs_visitor));
+	}
+	while (!topo_vertex_queue.empty())
+	{
+		TF_TOPO_VERTEX_T data = _topo_graph[topo_vertex_queue.front()];
+		branch_id_queue->push(data.BranchID);
+		printf("branch_id:%s name:%s\r\n --->", data.BranchID.c_str(), data.BranchName.c_str());
+		topo_vertex_queue.pop();
+	}
+}

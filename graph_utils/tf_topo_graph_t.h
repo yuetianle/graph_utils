@@ -81,7 +81,7 @@ public:
 	topo_vertex_writer(Name _name) : name(_name) {}
 	template <class VertexOrEdge>
 	void operator()(std::ostream& out, const VertexOrEdge& v) const {
-		std::string data = BF_COMMON::bf_to_gbk(name[v].BranchName);
+		std::string data = name[v].BranchName;
 		//out << "[label=\"" << name[v].BranchName << "\"]";
 		out << "[label=\"" << data << "\"]";
 	}
@@ -103,6 +103,22 @@ public:
 	}
 	TF_TOPO_VERTEX_DES_QUEUE &visited;
 };
+
+class tf_topo_dfs_visitor_t : public boost::default_dfs_visitor
+{
+public:
+	tf_topo_dfs_visitor_t(TF_TOPO_VERTEX_DES_QUEUE &visited_): visited(visited_)
+	{}
+	void discover_vertex(TF_TOPO_VERTEX_DES s, const TOPO_GRAPH &g)
+	{
+
+		TF_TOPO_VERTEX_T data = g[s];
+		printf("--->%s", data.BranchID.c_str());
+		visited.push(s);
+	}
+	TF_TOPO_VERTEX_DES_QUEUE visited;
+};
+
 class tf_topo_graph_t
 {
 public:
@@ -118,6 +134,9 @@ public:
 	 * 
 	*/
 	void breadth_first(const std::string& branch_id, TF_TOPO_VERTEX_DES_QUEUE *topo_vertex_queue);
+	void breadth_first(const std::string& branch_id, std::queue<std::string> *branch_id_queue);
+	void dfs_first(const std::string& branch_id, TF_TOPO_VERTEX_DES_QUEUE *topo_vertex_queue);
+	void dfs_first(const std::string& branch_id, std::queue<std::string> *branch_id_queue);
 private:
 	std::map<std::string, TF_TOPO_VERTEX_DES> _vertex_map;
 	std::map<std::string, TF_TOPO_EDGE_DES> _edge_map;
