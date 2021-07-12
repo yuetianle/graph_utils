@@ -74,6 +74,22 @@ void tf_topo_graph_t::print_topo_node_info()
 	{
 		TF_TOPO_VERTEX_DES node_desc = *item;
 		TF_TOPO_VERTEX_T data = _topo_graph[node_desc];
-		printf("data branch_id:%s", data.BranchID.c_str());
+		std::string branch_name = data.BranchName;
+		printf("data branch_id:%s name:%s\r\n", data.BranchID.c_str(), branch_name.c_str());
+	}
+}
+
+void tf_topo_graph_t::breadth_first(const std::string& branch_id, TF_TOPO_VERTEX_DES_QUEUE *topo_vertex_queue)
+{
+	if (branch_id.empty() || !topo_vertex_queue)
+	{
+		return;
+	}
+	auto find_item = _vertex_map.find(branch_id);
+
+	tf_topo_bfs_visitor_t topo_bfs_visitor(*topo_vertex_queue);
+	if (find_item != _vertex_map.end())
+	{
+		boost::breadth_first_search(_topo_graph, find_item->second, boost::visitor(topo_bfs_visitor));
 	}
 }

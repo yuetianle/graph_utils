@@ -1,4 +1,4 @@
-// graph_utils.cpp : å®šä¹‰æ§åˆ¶å°åº”ç”¨ç¨‹åºçš„å…¥å£ç‚¹ã€‚
+// graph_utils.cpp : ¶¨Òå¿ØÖÆÌ¨Ó¦ÓÃ³ÌĞòµÄÈë¿Úµã¡£
 //
 
 #include "stdafx.h"
@@ -18,50 +18,48 @@ int main()
 	tf_topo_vertex_t tf_topo_8;
 	tf_topo_vertex_t tf_topo_9;
 	tf_topo_1.BranchID = "1";
-	tf_topo_1.BranchName = "æ¯çº¿1";
+	tf_topo_1.BranchName = "Ä¸Ïß1";
 	tf_topo_1.NodeBegin = 1;
 
 	tf_topo_2.BranchID = "2";
-	tf_topo_2.BranchName = "å˜å‹å™¨2";
+	tf_topo_2.BranchName = "±äÑ¹Æ÷2";
 	tf_topo_2.NodeBegin = 2;
 	tf_topo_2.NodeEnd = 1;
 	tf_topo_2.NodeThird = 1;
 
 	tf_topo_3.BranchID = "3";
-	tf_topo_3.BranchName = "çŸ­è·¯å™¨3";
+	tf_topo_3.BranchName = "¶ÌÂ·Æ÷3";
 	tf_topo_3.NodeBegin = 2;
 	tf_topo_3.NodeEnd = 3;
 
 	tf_topo_4.BranchID = "4";
-	tf_topo_4.BranchName = "æ¯çº¿4";
+	tf_topo_4.BranchName = "Ä¸Ïß4";
 	tf_topo_4.NodeBegin = 3;
 
 	tf_topo_5.BranchID = "5";
-	tf_topo_5.BranchName = "çŸ­è·¯å™¨5";
+	tf_topo_5.BranchName = "¶ÌÂ·Æ÷5";
 	tf_topo_5.NodeBegin = 3;
 	tf_topo_5.NodeEnd = 4;
 
 	tf_topo_6.BranchID = "6";
-	tf_topo_6.BranchName = "æ¯çº¿6";
+	tf_topo_6.BranchName = "Ä¸Ïß6";
 	tf_topo_6.NodeBegin = 4;
 
 	tf_topo_7.BranchID = "7";
-	tf_topo_7.BranchName = "çŸ­è·¯å™¨7";
+	tf_topo_7.BranchName = "¶ÌÂ·Æ÷7";
 	tf_topo_7.NodeBegin = 4;
 	tf_topo_7.NodeEnd = 5;
 
 	tf_topo_8.BranchID = "8";
-	tf_topo_8.BranchName = "å˜å‹å™¨8";
+	tf_topo_8.BranchName = "±äÑ¹Æ÷8";
 	tf_topo_8.NodeBegin = 5;
 	tf_topo_8.NodeEnd = 6;
 	tf_topo_8.NodeThird = 6;
 
 	tf_topo_9.BranchID = "9";
-	tf_topo_9.BranchName = "æ¯çº¿9";
+	tf_topo_9.BranchName = "Ä¸Ïß9";
 	tf_topo_9.NodeBegin = 6;
 
-
-		
 	graph_data.add_topo_node(tf_topo_1);
 	graph_data.add_topo_node(tf_topo_2);
 	graph_data.add_topo_node(tf_topo_3);
