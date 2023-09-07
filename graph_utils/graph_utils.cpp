@@ -76,7 +76,7 @@ int main()
 	tf_topo_9.BranchName = "Ä¸Ïß9";
 	tf_topo_9.NodeBegin = 6;
 
-	tf_topo_second_one.BranchID = "10";
+tf_topo_second_one.BranchID = "10";
 	tf_topo_second_one.BranchName = "Ä¸Ïß10";
 	tf_topo_second_one.NodeBegin = 10;
 
@@ -88,11 +88,7 @@ int main()
 	tf_topo_second_three.BranchID = "12";
 	tf_topo_second_three.BranchName = "¶ÏÂ·Æ÷12";
 	tf_topo_second_three.NodeBegin = 11;
-	tf_topo_second_three.NodeEnd = 12;
-
-
-		
-	graph_data.add_topo_node(tf_topo_1);
+	tf_topo_second_three.NodeEnd = 12;	graph_data.add_topo_node(tf_topo_1);
 	graph_data.add_topo_node(tf_topo_2);
 	graph_data.add_topo_node(tf_topo_2_link);
 	graph_data.add_topo_node(tf_topo_2_link1);
@@ -140,6 +136,9 @@ int main()
 	graph_data.add_topo_edge(tf_topo_second_two.BranchID, tf_topo_second_three.BranchID, edge);
 	std::string file_name = "test.dot";
 	graph_data.print_topo_node_info();
+	TF_TOPO_VERTEX_DES_QUEUE topo_vertex_queue;
+	std::queue<std::string> branch_ids;
+	graph_data.breadth_first(tf_topo_4.BranchID, &branch_ids);
 	graph_data.write_file(file_name);
 	auto topo_branch_count = graph_data.topo_branchs_num();
 	auto topo_branch_edge_count = graph_data.topo_edges_num();

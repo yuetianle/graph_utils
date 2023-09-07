@@ -3,11 +3,13 @@
 #define _tf_graph_t_h_
 
 #include <set>
-
+#include <queue>
 #include "boost/graph/graph_traits.hpp"
 #include "boost/graph/adjacency_list.hpp"
 #include "boost/graph/graphviz.hpp"
-
+#include "boost/graph/depth_first_search.hpp"
+#include "boost/graph/breadth_first_search.hpp"
+#include "boost/graph/visitors.hpp"
 #include "boost/graph/visitors.hpp"
 #include "boost/graph/breadth_first_search.hpp"
 #include "bf_string_utils.h"
@@ -69,6 +71,7 @@ typedef tf_graph_desc_t TF_GRAPH_T;
 
 typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, TF_TOPO_VERTEX_T, TF_TOPO_EDGE_T, TF_GRAPH_T> TOPO_GRAPH;
 typedef boost::graph_traits<TOPO_GRAPH>::vertex_descriptor TF_TOPO_VERTEX_DES;
+typedef std::queue<TF_TOPO_VERTEX_DES> TF_TOPO_VERTEX_DES_QUEUE;
 typedef boost::graph_traits<TOPO_GRAPH>::edge_descriptor TF_TOPO_EDGE_DES;
 typedef boost::graph_traits<TOPO_GRAPH>::vertex_iterator TF_TOPO_VERTEX_ITER;
 typedef boost::graph_traits<TOPO_GRAPH>::edge_iterator TF_TOPO_EDGE_ITER;
@@ -85,14 +88,12 @@ public:
 			data = BF_COMMON::bf_to_utf8(data);
 		}
 		data = name[v].BranchID + ":"+ data;
-		std::cout << "name:" << data << std::endl;
-		//out << "[label=\"" << name[v].BranchName << "\"]";
+		std::cout << "name:" << data << std::endl;		//out << "[label=\"" << name[v].BranchName << "\"]";
 		out << "[label=\"" << data << "\"]";
 	}
 private:
 	Name name;
 };
-
 template <class Name>
 class topo_edge_writer {
 public:
@@ -152,7 +153,35 @@ public:
 private:
 	std::vector<VertexDescriptor> &m_nodes_visited;
 };
+class tf_topo_bfs_visitor_t : public boost::default_bfs_visitor
+{
+public:
+	tf_topo_bfs_visitor_t(TF_TOPO_VERTEX_DES_QUEUE &visited_): visited(visited_)
+	{}
+	void discover_vertex(TF_TOPO_VERTEX_DES s, const TOPO_GRAPH &g)
+	{
 
+		TF_TOPO_VERTEX_T data = g[s];
+		printf("--->%s", data.BranchID.c_str());
+		visited.push(s);
+	}
+	TF_TOPO_VERTEX_DES_QUEUE &visited;
+};
+
+class tf_topo_dfs_visitor_t : public boost::default_dfs_visitor
+{
+public:
+	tf_topo_dfs_visitor_t(TF_TOPO_VERTEX_DES_QUEUE &visited_): visited(visited_)
+	{}
+	void discover_vertex(TF_TOPO_VERTEX_DES s, const TOPO_GRAPH &g)
+	{
+
+		TF_TOPO_VERTEX_T data = g[s];
+		printf("--->%s", data.BranchID.c_str());
+		visited.push(s);
+	}
+	TF_TOPO_VERTEX_DES_QUEUE visited;
+};
 class tf_topo_graph_t
 {
 public:
@@ -189,7 +218,14 @@ public:
 	size_t get_link_bus_by_branch_id(const std::string& branch_id, std::set<std::string> *bus_ids);
 	bool write_file(const std::string &file_name);
 	void print_topo_node_info();
-
+	/*
+	 * @brief 广度优先遍历
+	 * 
+	*/
+	void breadth_first(const std::string& branch_id, TF_TOPO_VERTEX_DES_QUEUE *topo_vertex_queue);
+	void breadth_first(const std::string& branch_id, std::queue<std::string> *branch_id_queue);
+	void dfs_first(const std::string& branch_id, TF_TOPO_VERTEX_DES_QUEUE *topo_vertex_queue);
+	void dfs_first(const std::string& branch_id, std::queue<std::string> *branch_id_queue);
 private:
 	std::map<std::string, TF_TOPO_VERTEX_DES> _vertex_map;
 	std::map<std::string, TF_TOPO_EDGE_DES> _edge_map;
